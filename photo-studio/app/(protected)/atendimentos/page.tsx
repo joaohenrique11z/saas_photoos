@@ -6,6 +6,7 @@ import { Plus, Filter, Eye, User, Calendar } from "lucide-react";
 import { getAppointments } from "@/actions/appointment-actions";
 import { PageHeader } from "@/components/layout/page-header";
 import { StatusBadge } from "@/components/status-badge";
+import { AppointmentEditDialog } from "@/components/appointment-edit-dialog";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -135,13 +136,19 @@ export default function AtendimentosPage() {
                         <StatusBadge status={app.status} />
                       </td>
                       <td className="p-4 text-right">
-                        <Link
-                          href={`/atendimentos/${app.id}`}
-                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-muted hover:bg-muted/80 text-xs font-medium text-foreground transition-colors"
-                        >
-                          <Eye className="w-3.5 h-3.5" />
-                          <span>Detalhes</span>
-                        </Link>
+                        <div className="flex items-center justify-end gap-1.5">
+                          <AppointmentEditDialog
+                            appointment={app}
+                            onSuccess={() => loadAppointments(selectedStatus)}
+                          />
+                          <Link
+                            href={`/atendimentos/${app.id}`}
+                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-muted hover:bg-muted/80 text-xs font-medium text-foreground transition-colors"
+                          >
+                            <Eye className="w-3.5 h-3.5" />
+                            <span>Detalhes</span>
+                          </Link>
+                        </div>
                       </td>
                     </tr>
                   ))

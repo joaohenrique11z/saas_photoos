@@ -22,6 +22,7 @@ import {
 import { createExpense, deleteExpense } from "@/actions/expense-actions";
 import { PageHeader } from "@/components/layout/page-header";
 import { StatusBadge, AppointmentStatus } from "@/components/status-badge";
+import { AppointmentEditDialog } from "@/components/appointment-edit-dialog";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -156,13 +157,19 @@ export default function FichaAtendimentoPage({
         title={appointment.serviceName}
         subtitle={`Atendimento com ${appointment.client?.name || "Cliente"}`}
         action={
-          <button
-            onClick={handleDelete}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-rose-500/20 text-rose-500 hover:bg-rose-500/10 text-xs font-semibold"
-          >
-            <Trash2 className="w-3.5 h-3.5" />
-            <span>Excluir Atendimento</span>
-          </button>
+          <div className="flex items-center gap-2">
+            <AppointmentEditDialog
+              appointment={appointment}
+              onSuccess={loadData}
+            />
+            <button
+              onClick={handleDelete}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-rose-500/20 text-rose-500 hover:bg-rose-500/10 text-xs font-semibold"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+              <span>Excluir Atendimento</span>
+            </button>
+          </div>
         }
       />
 

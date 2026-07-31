@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Plus, Search, User, Phone, Mail, AtSign, Eye, Trash2 } from "lucide-react";
 import { getClients, createClient, deleteClient } from "@/actions/client-actions";
 import { PageHeader } from "@/components/layout/page-header";
+import { ClientEditDialog } from "@/components/client-edit-dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -273,7 +274,7 @@ export default function ClientesPage() {
                         {cli.notes || "-"}
                       </td>
                       <td className="p-4 text-right">
-                        <div className="flex items-center justify-end gap-2">
+                        <div className="flex items-center justify-end gap-1.5">
                           <Link
                             href={`/clientes/${cli.id}`}
                             className="p-1.5 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground"
@@ -281,6 +282,10 @@ export default function ClientesPage() {
                           >
                             <Eye className="w-4 h-4" />
                           </Link>
+                          <ClientEditDialog
+                            client={cli}
+                            onSuccess={() => loadClients(search)}
+                          />
                           <button
                             onClick={() => handleDelete(cli.id, cli.name)}
                             className="p-1.5 rounded-md hover:bg-rose-500/10 text-rose-500"

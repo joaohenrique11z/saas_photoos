@@ -42,6 +42,27 @@ export async function createExpense(data: {
   return expense;
 }
 
+export async function updateExpense(
+  id: string,
+  data: {
+    description?: string;
+    amount?: number;
+    date?: Date;
+  }
+) {
+  const expense = await prisma.expense.update({
+    where: { id },
+    data: {
+      ...(data.description !== undefined ? { description: data.description } : {}),
+      ...(data.amount !== undefined ? { amount: data.amount } : {}),
+      ...(data.date !== undefined ? { date: data.date } : {}),
+    },
+  });
+  revalidatePath("/financeiro");
+  revalidatePath("/");
+  return expense;
+}
+
 export async function deleteExpense(id: string) {
   await prisma.expense.delete({ where: { id } });
   revalidatePath("/financeiro");

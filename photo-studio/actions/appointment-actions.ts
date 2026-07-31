@@ -82,6 +82,36 @@ export async function updateAppointmentStatus(
   return appointment;
 }
 
+export async function updateAppointment(
+  id: string,
+  data: {
+    serviceName?: string;
+    date?: Date;
+    time?: string;
+    location?: string;
+    price?: number;
+    status?: any;
+    summaryNotes?: string;
+  }
+) {
+  const appointment = await prisma.appointment.update({
+    where: { id },
+    data: {
+      ...(data.serviceName !== undefined ? { serviceName: data.serviceName } : {}),
+      ...(data.date !== undefined ? { date: data.date } : {}),
+      ...(data.time !== undefined ? { time: data.time } : {}),
+      ...(data.location !== undefined ? { location: data.location } : {}),
+      ...(data.price !== undefined ? { price: data.price } : {}),
+      ...(data.status !== undefined ? { status: data.status } : {}),
+      ...(data.summaryNotes !== undefined ? { summaryNotes: data.summaryNotes } : {}),
+    },
+  });
+  revalidatePath("/atendimentos");
+  revalidatePath(`/atendimentos/${id}`);
+  revalidatePath("/");
+  return appointment;
+}
+
 export async function deleteAppointment(id: string) {
   await prisma.appointment.delete({ where: { id } });
   revalidatePath("/atendimentos");
