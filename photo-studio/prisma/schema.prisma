@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}
+
+model Client {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String?
+  whatsapp  String?
+  email     String?
+  instagram String?
+  notes     String?
+  createdAt DateTime @default(now())
+
+  appointments Appointment[]
+
+  @@index([name])
+}
+
+enum AppointmentStatus {
+  ORCAMENTO
+  AGENDADO
+  REALIZADO
+  ENTREGUE
+  CANCELADO
+}
+
+model Appointment {
+  id           String            @id @default(cuid())
+  clientId     String
+  client       Client            @relation(fields: [clientId], references: [id])
+  serviceName  String
+  date         DateTime
+  time         String
+  location     String?
+  price        Decimal
+  status       AppointmentStatus @default(ORCAMENTO)
+  summaryNotes String?
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+
+  expenses     Expense[]
+
+  @@index([status])
+  @@index([date])
+}
+
+model Expense {
+  id            String       @id @default(cuid())
+  appointmentId String?
+  appointment   Appointment? @relation(fields: [appointmentId], references: [id])
+  description   String
+  amount        Decimal
+  date          DateTime
+  createdAt     DateTime     @default(now())
+
+  @@index([appointmentId])
+  @@index([date])
+}

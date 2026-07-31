@@ -1,0 +1,316 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Tenant {
+  id          String   @id @default(cuid())
+  nome        String
+  slug        String   @unique
+  logoUrl     String?
+  corPrimaria String?
+  plano       String   @default("trial")
+  criadoEm    DateTime @default(now())
+
+  usuarios         Usuario[]
+  clientes         Cliente[]
+  servicos         Servico[]
+  ensaios          Ensaio[]
+  equipamentos     Equipamento[]
+  contratosModelos ContratoModelo[]
+  templatesMensagem TemplateMensagem[]
+}
+
+enum PapelUsuario {
+  ADMIN
+  FUNCIONARIO
+  FOTOGRAFO
+}
+
+model Usuario {
+  id        String       @id @default(cuid())
+  tenantId  String
+  tenant    Tenant       @relation(fields: [tenantId], references: [id])
+  nome      String
+  email     String
+  senhaHash String
+  papel     PapelUsuario
+  ativo     Boolean      @default(true)
+  criadoEm  DateTime     @default(now())
+
+  ensaiosAlocados EnsaioFotografo[]
+
+  @@unique([tenantId, email])
+  @@index([tenantId])
+}
+
+model Cliente {
+  id             String    @id @default(cuid())
+  tenantId       String
+  tenant         Tenant    @relation(fields: [tenantId], references: [id])
+  nomeCompleto   String
+  fotoUrl        String?
+  telefone       String?
+  whatsapp       String?
+  email          String?
+  cpf            String?
+  dataNascimento DateTime?
+  instagram      String?
+  endereco       String?
+  cidade         String?
+  observacoes    String?
+  origem         String?
+  criadoEm       DateTime  @default(now())
+
+  ensaios      Ensaio[]
+  interacoes   InteracaoTimeline[]
+  leadPipeline LeadPipeline?
+  transacoes   TransacaoFinanceira[]
+
+  @@index([tenantId])
+}
+
+model InteracaoTimeline {
+  id        String   @id @default(cuid())
+  tenantId  String
+  clienteId String
+  cliente   Cliente  @relation(fields: [clienteId], references: [id])
+  tipo      String
+  descricao String
+  metadata  Json?
+  criadoEm  DateTime @default(now())
+
+  @@index([tenantId, clienteId])
+}
+
+model Servico {
+  id               String   @id @default(cuid())
+  tenantId         String
+  tenant           Tenant   @relation(fields: [tenantId], references: [id])
+  nome             String
+  descricao        String?
+  valorPadrao      Decimal  @db.Decimal(10, 2)
+  tempoMedioMin    Int?
+  qtdFotosInclusas Int?
+  valorFotoExtra   Decimal? @db.Decimal(10, 2)
+  qtdPessoas       Int?
+  local            String?
+  observacoes      String?
+  ativo            Boolean  @default(true)
+
+  ensaios        Ensaio[]
+
+  @@index([tenantId])
+}
+
+enum StatusEnsaio {
+  ORCAMENTO_ENVIADO
+  AGUARDANDO_RESPOSTA
+  CONFIRMADO
+  AGENDADO
+  EM_ANDAMENTO
+  EDICAO
+  SELECAO_CLIENTE
+  ENTREGUE
+  FINALIZADO
+  CANCELADO
+}
+
+model Ensaio {
+  id                    String        @id @default(cuid())
+  tenantId              String
+  tenant                Tenant        @relation(fields: [tenantId], references: [id])
+  clienteId             String
+  cliente               Cliente       @relation(fields: [clienteId], references: [id])
+  servicoId             String
+  servico               Servico       @relation(fields: [servicoId], references: [id])
+  dataHora              DateTime
+  local                 String?
+  valorTotal            Decimal       @db.Decimal(10, 2)
+  sinalPago             Decimal       @default(0) @db.Decimal(10, 2)
+  status                StatusEnsaio  @default(ORCAMENTO_ENVIADO)
+  checklistEquipamentos Json?
+  criadoEm              DateTime      @default(now())
+
+  fotografos      EnsaioFotografo[]
+  documentos      Documento[]
+  transacoes      TransacaoFinanceira[]
+  despesas        DespesaEnsaio[]
+  contrato        Contrato?
+  galeria         Galeria?
+  tarefasWorkflow TarefaWorkflow[]
+
+  @@index([tenantId, status])
+  @@index([tenantId, dataHora])
+}
+
+model EnsaioFotografo {
+  ensaioId  String
+  ensaio    Ensaio  @relation(fields: [ensaioId], references: [id])
+  usuarioId String
+  usuario   Usuario @relation(fields: [usuarioId], references: [id])
+
+  @@id([ensaioId, usuarioId])
+}
+
+model TarefaWorkflow {
+  id           String   @id @default(cuid())
+  tenantId     String
+  ensaioId     String
+  ensaio       Ensaio   @relation(fields: [ensaioId], references: [id])
+  titulo       String
+  dataExecucao DateTime
+  concluida    Boolean  @default(false)
+
+  @@index([tenantId, dataExecucao])
+}
+
+model DespesaEnsaio {
+  id        String   @id @default(cuid())
+  tenantId  String
+  ensaioId  String
+  ensaio    Ensaio   @relation(fields: [ensaioId], references: [id])
+  descricao String
+  categoria String
+  valor     Decimal  @db.Decimal(10, 2)
+  criadoEm  DateTime @default(now())
+
+  @@index([tenantId, ensaioId])
+}
+
+enum TipoTransacao {
+  RECEITA
+  DESPESA
+}
+
+enum StatusTransacao {
+  PENDENTE
+  PAGO
+  ATRASADO
+  CANCELADO
+}
+
+model TransacaoFinanceira {
+  id              String           @id @default(cuid())
+  tenantId        String
+  ensaioId        String?
+  ensaio          Ensaio?          @relation(fields: [ensaioId], references: [id])
+  clienteId       String?
+  cliente         Cliente?         @relation(fields: [clienteId], references: [id])
+  tipo            TipoTransacao
+  categoria       String?
+  descricao       String
+  valor           Decimal          @db.Decimal(10, 2)
+  metodoPagamento String?
+  status          StatusTransacao  @default(PENDENTE)
+  dataVencimento  DateTime?
+  dataPagamento   DateTime?
+  gatewayTxId     String?
+  criadoEm        DateTime         @default(now())
+
+  @@index([tenantId, status])
+  @@index([tenantId, dataVencimento])
+}
+
+model ContratoModelo {
+  id           String   @id @default(cuid())
+  tenantId     String
+  tenant       Tenant   @relation(fields: [tenantId], references: [id])
+  nome         String
+  conteudoHtml String
+  ativo        Boolean  @default(true)
+}
+
+model Contrato {
+  id            String    @id @default(cuid())
+  tenantId      String
+  ensaioId      String    @unique
+  ensaio        Ensaio    @relation(fields: [ensaioId], references: [id])
+  conteudoFinal String
+  assinado      Boolean   @default(false)
+  assinadoEm    DateTime?
+  ipAssinatura  String?
+  hashDocumento String?
+  criadoEm      DateTime  @default(now())
+
+  @@index([tenantId])
+}
+
+model Documento {
+  id        String   @id @default(cuid())
+  tenantId  String
+  ensaioId  String
+  ensaio    Ensaio   @relation(fields: [ensaioId], references: [id])
+  tipo      String
+  url       String
+  criadoEm  DateTime @default(now())
+
+  @@index([tenantId, ensaioId])
+}
+
+model Galeria {
+  id            String   @id @default(cuid())
+  tenantId      String
+  ensaioId      String   @unique
+  ensaio        Ensaio   @relation(fields: [ensaioId], references: [id])
+  linkPublico   String   @unique
+  limiteSelecao Int
+  finalizada    Boolean  @default(false)
+  criadoEm      DateTime @default(now())
+
+  fotos         FotoGaleria[]
+}
+
+model FotoGaleria {
+  id          String   @id @default(cuid())
+  tenantId    String
+  galeriaId   String
+  galeria     Galeria  @relation(fields: [galeriaId], references: [id])
+  urlBaixaRes String
+  urlOriginal String
+  selecionada Boolean  @default(false)
+  comentario  String?
+  ordem       Int      @default(0)
+
+  @@index([tenantId, galeriaId])
+}
+
+model LeadPipeline {
+  id           String   @id @default(cuid())
+  tenantId     String
+  clienteId    String   @unique
+  cliente      Cliente  @relation(fields: [clienteId], references: [id])
+  etapa        String
+  origem       String?
+  atualizadoEm DateTime @updatedAt
+
+  @@index([tenantId, etapa])
+}
+
+model TemplateMensagem {
+  id       String   @id @default(cuid())
+  tenantId String
+  tenant   Tenant   @relation(fields: [tenantId], references: [id])
+  nome     String
+  gatilho  String
+  conteudo String
+  ativo    Boolean  @default(true)
+}
+
+model Equipamento {
+  id                      String    @id @default(cuid())
+  tenantId                String
+  tenant                  Tenant    @relation(fields: [tenantId], references: [id])
+  nome                    String
+  tipo                    String
+  numeroSerie             String?
+  dataUltimaManutencao    DateTime?
+  intervaloManutencaoDias Int?
+  ativo                   Boolean   @default(true)
+
+  @@index([tenantId])
+}

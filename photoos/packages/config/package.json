@@ -1,0 +1,14 @@
+{
+  "name": "@photoos/config",
+  "version": "0.1.0",
+  "private": true,
+  "main": "index.js",
+  "files": [
+    "tsconfig.base.json",
+    "tailwind.config.js",
+    "eslint-preset.js"
+  ],
+  "devDependencies": {
+    "typescript": "^5.5.0"
+  }
+}
