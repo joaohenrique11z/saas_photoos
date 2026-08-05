@@ -2,7 +2,7 @@ import crypto from 'crypto';
 import { cookies } from 'next/headers';
 import { prisma } from './db';
 
-const SESSION_COOKIE_NAME = 'photo_studio_session';
+export const SESSION_COOKIE_NAME = 'photo_studio_session';
 const SESSION_SECRET =
   process.env.SESSION_SECRET || 'default_secret_key_change_in_production_32';
 
@@ -19,20 +19,20 @@ export function verifyPassword(password: string, hash: string): boolean {
   return key === derivedKey;
 }
 
-function signToken(username: string): string {
+export function signToken(username: string): string {
   const payload = `${username}:${Date.now()}`;
   const hmac = crypto
     .createHmac('sha256', SESSION_SECRET)
     .update(payload)
     .digest('hex');
-  return `${Buffer.from(payload).toString('base64')}.${hmac}`;
+  return `${Buffer.from(payload).toString('base64url')}.${hmac}`;
 }
 
 function verifyToken(token: string): string | null {
   try {
     const [encodedPayload, sig] = token.split('.');
     if (!encodedPayload || !sig) return null;
-    const payload = Buffer.from(encodedPayload, 'base64').toString('utf8');
+    const payload = Buffer.from(encodedPayload, 'base64url').toString('utf8');
     const expectedSig = crypto
       .createHmac('sha256', SESSION_SECRET)
       .update(payload)
@@ -45,17 +45,7 @@ function verifyToken(token: string): string | null {
   }
 }
 
-export async function setSessionCookie(username: string) {
-  const token = signToken(username);
-  const cookieStore = await cookies();
-  cookieStore.set(SESSION_COOKIE_NAME, token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
-    path: '/',
-    maxAge: 60 * 60 * 24 * 7, // 7 days
-  });
-}
+
 
 export async function clearSessionCookie() {
   const cookieStore = await cookies();

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
-import { verifyPassword, setSessionCookie } from "@/lib/auth";
+import { verifyPassword, signToken, SESSION_COOKIE_NAME } from "@/lib/auth";
 
 export async function POST(req: NextRequest) {
   try {
@@ -24,9 +24,17 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    await setSessionCookie(user.username);
+    const token = signToken(user.username);
+    const response = NextResponse.json({ success: true, username: user.username });
+    response.cookies.set(SESSION_COOKIE_NAME, token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+    });
 
-    return NextResponse.json({ success: true, username: user.username });
+    return response;
   } catch (error: any) {
     return NextResponse.json(
       { message: error.message || "Erro interno ao realizar login." },
