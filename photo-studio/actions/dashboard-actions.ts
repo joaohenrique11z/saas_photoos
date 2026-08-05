@@ -69,8 +69,8 @@ export async function getDashboardSummary() {
   ]);
 
   const totalRevenue = allAppointments
-    .filter((a) => a.status === "REALIZADO" || a.status === "ENTREGUE")
-    .reduce((acc, a) => acc + Number(a.price), 0);
+    .filter((a: any) => a.status === "REALIZADO" || a.status === "ENTREGUE")
+    .reduce((acc: any, a: any) => acc + Number(a.price), 0);
 
   const totalExpense = allExpenses.reduce(
     (acc, e) => acc + Number(e.amount),
@@ -149,8 +149,8 @@ export async function getDashboardSummary() {
     prevMonthRevenue > 0
       ? ((monthlyRevenue - prevMonthRevenue) / prevMonthRevenue) * 100
       : monthlyRevenue > 0
-      ? 100
-      : 0;
+        ? 100
+        : 0;
 
   return {
     totalClients,
@@ -264,8 +264,8 @@ export async function getFinancialMonthlyReport() {
       prevRevenue > 0
         ? ((m.revenue - prevRevenue) / prevRevenue) * 100
         : m.revenue > 0
-        ? 100
-        : 0;
+          ? 100
+          : 0;
     return {
       label: m.monthName.slice(0, 3),
       crescimento: Math.round(growth),
