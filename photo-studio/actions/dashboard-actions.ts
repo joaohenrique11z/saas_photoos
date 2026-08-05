@@ -73,7 +73,7 @@ export async function getDashboardSummary() {
     .reduce((acc: any, a: any) => acc + Number(a.price), 0);
 
   const totalExpense = allExpenses.reduce(
-    (acc, e) => acc + Number(e.amount),
+    (acc: any, e: any) => acc + Number(e.amount),
     0
   );
 
@@ -217,7 +217,7 @@ export async function getFinancialMonthlyReport() {
       .reduce((acc: any, a: any) => acc + Number(a.price), 0);
 
     const expenseTotal = expensesInMonth.reduce(
-      (acc, e) => acc + Number(e.amount),
+      (acc: any, e: any) => acc + Number(e.amount),
       0
     );
 
