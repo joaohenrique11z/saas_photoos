@@ -9,16 +9,16 @@ export async function getClients(search?: string) {
   return prisma.client.findMany({
     where: search
       ? {
-          OR: [
-            { name: { contains: search } },
-            { email: { contains: search } },
-            { phone: { contains: search } },
-            { whatsapp: { contains: search } },
-            { instagram: { contains: search } },
-            { notes: { contains: search } },
-            { address: { contains: search } },
-          ],
-        }
+        OR: [
+          { name: { contains: search } },
+          { email: { contains: search } },
+          { phone: { contains: search } },
+          { whatsapp: { contains: search } },
+          { instagram: { contains: search } },
+          { notes: { contains: search } },
+          { address: { contains: search } },
+        ],
+      }
       : undefined,
     orderBy: { name: "asc" },
   });
@@ -39,7 +39,7 @@ export async function getClientById(id: string) {
 
   return {
     ...client,
-    appointments: client.appointments.map((a) => ({
+    appointments: client.appointments.map((a: any) => ({
       ...a,
       price: typeof (a.price as any)?.toNumber === "function"
         ? (a.price as any).toNumber()
@@ -59,7 +59,7 @@ export async function createClient(data: {
   notes?: string;
 }) {
   await requireAuth();
-  
+
   const parsedData = clientSchema.safeParse(data);
   if (!parsedData.success) {
     throw new Error(parsedData.error.issues[0].message);
@@ -86,7 +86,7 @@ export async function updateClient(
   }
 ) {
   await requireAuth();
-  
+
   // Create a partial schema for updates
   const parsedData = clientSchema.partial().safeParse(data);
   if (!parsedData.success) {
