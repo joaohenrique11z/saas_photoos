@@ -110,7 +110,7 @@ export async function deleteClient(id: string) {
       where: { clientId: id },
       select: { id: true },
     });
-    const appointmentIds = appointments.map((a) => a.id);
+    const appointmentIds = appointments.map((a: any) => a.id);
     if (appointmentIds.length > 0) {
       await tx.expense.deleteMany({
         where: { appointmentId: { in: appointmentIds } },
