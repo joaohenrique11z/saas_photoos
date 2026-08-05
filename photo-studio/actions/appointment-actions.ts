@@ -58,7 +58,7 @@ export async function getAppointmentById(id: string) {
     price: typeof (appointment.price as any)?.toNumber === "function"
       ? (appointment.price as any).toNumber()
       : Number(appointment.price),
-    expenses: appointment.expenses.map((e) => ({
+    expenses: appointment.expenses.map((e: any) => ({
       ...e,
       amount: typeof (e.amount as any)?.toNumber === "function"
         ? (e.amount as any).toNumber()
