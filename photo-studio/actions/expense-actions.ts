@@ -19,7 +19,7 @@ export async function getExpenses() {
     },
   });
 
-  return expenses.map((e) => ({
+  return expenses.map((e: any) => ({
     ...e,
     amount: Number(e.amount),
   }));

@@ -8,7 +8,7 @@ export async function wipeDatabase() {
   await requireAuth();
 
   try {
-    await prisma.$transaction(async (tx) => {
+    await prisma.$transaction(async (tx: any) => {
       // With cascade delete, we might only need to delete clients
       // but to be safe we can delete in order:
       await tx.expense.deleteMany({});

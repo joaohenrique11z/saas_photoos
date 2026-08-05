@@ -81,18 +81,18 @@ export async function getDashboardSummary() {
 
   // Today's appointments
   const todayAppointments = allAppointments
-    .filter((a) => {
+    .filter((a: any) => {
       const aDateStr = new Date(a.date).toISOString().split("T")[0];
       return aDateStr === todayStr;
     })
-    .map((a) => ({
+    .map((a: any) => ({
       ...a,
       price: Number(a.price),
     }));
 
   // Upcoming appointments (future dates)
   const upcomingAppointments = allAppointments
-    .filter((a) => {
+    .filter((a: any) => {
       const aDate = new Date(a.date);
       return (
         aDate >= new Date(todayStr) &&
@@ -100,30 +100,30 @@ export async function getDashboardSummary() {
       );
     })
     .slice(0, 5)
-    .map((a) => ({
+    .map((a: any) => ({
       ...a,
       price: Number(a.price),
     }));
 
   // Pending payments (appointments scheduled or budgeting)
   const pendingPayments = allAppointments
-    .filter((a) => a.status === "AGENDADO" || a.status === "ORCAMENTO")
-    .reduce((acc, a) => acc + Number(a.price), 0);
+    .filter((a: any) => a.status === "AGENDADO" || a.status === "ORCAMENTO")
+    .reduce((acc: any, a: any) => acc + Number(a.price), 0);
 
   // Daily revenue (realized today)
   const dailyRevenue = allAppointments
-    .filter((a) => {
+    .filter((a: any) => {
       const aDateStr = new Date(a.date).toISOString().split("T")[0];
       return (
         aDateStr === todayStr &&
         (a.status === "REALIZADO" || a.status === "ENTREGUE")
       );
     })
-    .reduce((acc, a) => acc + Number(a.price), 0);
+    .reduce((acc: any, a: any) => acc + Number(a.price), 0);
 
   // Monthly revenue (current month)
   const monthlyRevenue = allAppointments
-    .filter((a) => {
+    .filter((a: any) => {
       const d = new Date(a.date);
       return (
         d.getMonth() === currentMonth &&
@@ -131,11 +131,11 @@ export async function getDashboardSummary() {
         (a.status === "REALIZADO" || a.status === "ENTREGUE")
       );
     })
-    .reduce((acc, a) => acc + Number(a.price), 0);
+    .reduce((acc: any, a: any) => acc + Number(a.price), 0);
 
   // Previous month revenue
   const prevMonthRevenue = allAppointments
-    .filter((a) => {
+    .filter((a: any) => {
       const d = new Date(a.date);
       return (
         d.getMonth() === prevMonth &&
@@ -143,7 +143,7 @@ export async function getDashboardSummary() {
         (a.status === "REALIZADO" || a.status === "ENTREGUE")
       );
     })
-    .reduce((acc, a) => acc + Number(a.price), 0);
+    .reduce((acc: any, a: any) => acc + Number(a.price), 0);
 
   const monthlyGrowth =
     prevMonthRevenue > 0
@@ -166,7 +166,7 @@ export async function getDashboardSummary() {
     dailyRevenue,
     monthlyRevenue,
     monthlyGrowth,
-    recentAppointments: recentAppointments.map((a) => ({
+    recentAppointments: recentAppointments.map((a: any) => ({
       ...a,
       price: Number(a.price),
     })),
@@ -196,32 +196,32 @@ export async function getFinancialMonthlyReport() {
       ? new Date(allAppointments[allAppointments.length - 1].date).getFullYear()
       : currentYear;
 
-  const monthlyData = MONTH_NAMES.map((monthName, idx) => {
-    const appsInMonth = allAppointments.filter((a) => {
+  const monthlyData = MONTH_NAMES.map((monthName: any, idx: any) => {
+    const appsInMonth = allAppointments.filter((a: any) => {
       const d = new Date(a.date);
       return d.getMonth() === idx && d.getFullYear() === yearToReport;
     });
 
-    const expensesInMonth = allExpenses.filter((e) => {
+    const expensesInMonth = allExpenses.filter((e: any) => {
       const d = new Date(e.date);
       return d.getMonth() === idx && d.getFullYear() === yearToReport;
     });
 
-    const newClientsInMonth = allClients.filter((c) => {
+    const newClientsInMonth = allClients.filter((c: any) => {
       const d = new Date(c.createdAt);
       return d.getMonth() === idx && d.getFullYear() === yearToReport;
     });
 
     const revenue = appsInMonth
-      .filter((a) => a.status === "REALIZADO" || a.status === "ENTREGUE")
-      .reduce((acc, a) => acc + Number(a.price), 0);
+      .filter((a: any) => a.status === "REALIZADO" || a.status === "ENTREGUE")
+      .reduce((acc: any, a: any) => acc + Number(a.price), 0);
 
     const expenseTotal = expensesInMonth.reduce(
       (acc, e) => acc + Number(e.amount),
       0
     );
 
-    const uniqueClientIds = new Set(appsInMonth.map((a) => a.clientId));
+    const uniqueClientIds = new Set(appsInMonth.map((a: any) => a.clientId));
 
     return {
       monthIndex: idx,
@@ -233,7 +233,7 @@ export async function getFinancialMonthlyReport() {
       expenses: expenseTotal,
       profit: revenue - expenseTotal,
       newClientsCount: newClientsInMonth.length,
-      appointmentsList: appsInMonth.map((a) => ({
+      appointmentsList: appsInMonth.map((a: any) => ({
         id: a.id,
         serviceName: a.serviceName,
         clientName: a.client?.name || "Cliente",
@@ -241,7 +241,7 @@ export async function getFinancialMonthlyReport() {
         price: Number(a.price),
         status: a.status,
       })),
-      expensesList: expensesInMonth.map((e) => ({
+      expensesList: expensesInMonth.map((e: any) => ({
         id: e.id,
         description: e.description,
         amount: Number(e.amount),
@@ -251,14 +251,14 @@ export async function getFinancialMonthlyReport() {
   });
 
   // Calculate charts data
-  const revenueChart = monthlyData.map((m) => ({
+  const revenueChart = monthlyData.map((m: any) => ({
     label: m.monthName.slice(0, 3),
     receita: m.revenue,
     despesa: m.expenses,
     lucro: m.profit,
   }));
 
-  const growthChart = monthlyData.map((m, idx) => {
+  const growthChart = monthlyData.map((m: any, idx: any) => {
     const prevRevenue = idx > 0 ? monthlyData[idx - 1].revenue : 0;
     const growth =
       prevRevenue > 0
@@ -272,7 +272,7 @@ export async function getFinancialMonthlyReport() {
     };
   });
 
-  const appointmentsChart = monthlyData.map((m) => ({
+  const appointmentsChart = monthlyData.map((m: any) => ({
     label: m.monthName.slice(0, 3),
     atendimentos: m.appointmentsCount,
     novosClientes: m.newClientsCount,
@@ -281,7 +281,7 @@ export async function getFinancialMonthlyReport() {
   // Payment methods / Service category distribution (using serviceName as category)
   const categoryMap: Record<string, number> = {};
   allAppointments
-    .filter((a) => a.status === "REALIZADO" || a.status === "ENTREGUE")
+    .filter((a: any) => a.status === "REALIZADO" || a.status === "ENTREGUE")
     .forEach((a) => {
       const cat = a.serviceName || "Serviço Geral";
       categoryMap[cat] = (categoryMap[cat] || 0) + Number(a.price);
@@ -297,7 +297,7 @@ export async function getFinancialMonthlyReport() {
   const realizedApps = allAppointments.filter(
     (a) => a.status === "REALIZADO" || a.status === "ENTREGUE"
   );
-  const totalRev = realizedApps.reduce((acc, a) => acc + Number(a.price), 0);
+  const totalRev = realizedApps.reduce((acc: any, a: any) => acc + Number(a.price), 0);
   const averageTicket =
     realizedApps.length > 0 ? totalRev / realizedApps.length : 0;
 
