@@ -33,7 +33,7 @@ export async function getAppointments(statusFilter?: string, search?: string) {
     },
   });
 
-  return appointments.map((a) => ({
+  return appointments.map((a: any) => ({
     ...a,
     price: typeof (a.price as any)?.toNumber === "function"
       ? (a.price as any).toNumber()
@@ -78,7 +78,7 @@ export async function createAppointment(data: {
   summaryNotes?: string;
 }) {
   await requireAuth();
-  
+
   const parsedData = appointmentSchema.safeParse(data);
   if (!parsedData.success) {
     throw new Error(parsedData.error.issues[0].message);
