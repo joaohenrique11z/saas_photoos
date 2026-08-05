@@ -11,7 +11,6 @@ import {
   MapPin,
   Sparkles,
   CheckCircle2,
-  Phone,
 } from "lucide-react";
 import { getDashboardSummary } from "@/actions/dashboard-actions";
 import { PageHeader } from "@/components/layout/page-header";

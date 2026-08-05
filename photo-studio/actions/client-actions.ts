@@ -105,13 +105,22 @@ export async function updateClient(
 
 export async function deleteClient(id: string) {
   await requireAuth();
-  try {
-    // Prisma Cascade handles related Appointments and Expenses automatically
-    await prisma.client.delete({ where: { id } });
-  } catch (error) {
-    console.error("Error deleting client:", error);
-    throw new Error("Erro ao excluir cliente. Verifique as dependências.");
-  }
+  await prisma.$transaction(async (tx: any) => {
+    const appointments = await tx.appointment.findMany({
+      where: { clientId: id },
+      select: { id: true },
+    });
+    const appointmentIds = appointments.map((a: any) => a.id);
+    if (appointmentIds.length > 0) {
+      await tx.expense.deleteMany({
+        where: { appointmentId: { in: appointmentIds } },
+      });
+      await tx.appointment.deleteMany({
+        where: { clientId: id },
+      });
+    }
+    await tx.client.delete({ where: { id } });
+  });
   revalidatePath("/");
   revalidatePath("/clientes");
   revalidatePath("/atendimentos");

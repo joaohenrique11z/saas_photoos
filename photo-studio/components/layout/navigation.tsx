@@ -8,7 +8,6 @@ import {
   Users,
   Calendar,
   DollarSign,
-  Briefcase,
   LogOut,
 } from "lucide-react";
 import Image from "next/image";

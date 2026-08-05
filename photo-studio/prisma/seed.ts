@@ -75,29 +75,29 @@ async function main() {
       },
     });
 
-    const app2 = await prisma.appointment.create({
+    const _app2 = await prisma.appointment.create({
       data: {
         clientId: cli2.id,
         serviceName: 'Cobertura Casamento Civil + Recepção',
         date: new Date('2026-08-15T10:00:00.000Z'),
         time: '10:30',
-        location: 'Cartório Central e Bistrô',
-        price: '4500.00',
         status: 'AGENDADO',
-        summaryNotes: 'Cerimônia íntima para 40 convidados.',
+        price: 2500.0,
+        location: 'Cartório Central & Restaurante',
+        summaryNotes: 'Casamento apenas para íntimos. Foco em fotos espontâneas.',
       },
     });
 
-    const app3 = await prisma.appointment.create({
+    const _app3 = await prisma.appointment.create({
       data: {
         clientId: cli3.id,
         serviceName: 'Retrato Corporativo Executivo',
         date: new Date('2026-07-25T09:00:00.000Z'),
         time: '09:00',
-        location: 'Estúdio Próprio',
-        price: '850.00',
-        status: 'REALIZADO',
-        summaryNotes: 'Entregar fotos em alta e recorte para LinkedIn.',
+        status: 'ENTREGUE',
+        price: 600.0,
+        location: 'Estúdio',
+        summaryNotes: '3 looks diferentes. Fundo escuro e branco.',
       },
     });
 
