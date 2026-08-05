@@ -10,13 +10,13 @@ export async function getClients(search?: string) {
     where: search
       ? {
         OR: [
-          { name: { contains: search } },
-          { email: { contains: search } },
-          { phone: { contains: search } },
-          { whatsapp: { contains: search } },
-          { instagram: { contains: search } },
-          { notes: { contains: search } },
-          { address: { contains: search } },
+          { name: { contains: search, mode: "insensitive" } },
+          { email: { contains: search, mode: "insensitive" } },
+          { phone: { contains: search, mode: "insensitive" } },
+          { whatsapp: { contains: search, mode: "insensitive" } },
+          { instagram: { contains: search, mode: "insensitive" } },
+          { notes: { contains: search, mode: "insensitive" } },
+          { address: { contains: search, mode: "insensitive" } },
         ],
       }
       : undefined,
@@ -105,22 +105,13 @@ export async function updateClient(
 
 export async function deleteClient(id: string) {
   await requireAuth();
-  await prisma.$transaction(async (tx: any) => {
-    const appointments = await tx.appointment.findMany({
-      where: { clientId: id },
-      select: { id: true },
-    });
-    const appointmentIds = appointments.map((a: any) => a.id);
-    if (appointmentIds.length > 0) {
-      await tx.expense.deleteMany({
-        where: { appointmentId: { in: appointmentIds } },
-      });
-      await tx.appointment.deleteMany({
-        where: { clientId: id },
-      });
-    }
-    await tx.client.delete({ where: { id } });
-  });
+  try {
+    // Prisma Cascade handles related Appointments and Expenses automatically
+    await prisma.client.delete({ where: { id } });
+  } catch (error) {
+    console.error("Error deleting client:", error);
+    throw new Error("Erro ao excluir cliente. Verifique as dependências.");
+  }
   revalidatePath("/");
   revalidatePath("/clientes");
   revalidatePath("/atendimentos");

@@ -10,7 +10,6 @@ import {
   Calendar,
   Tag,
   Edit2,
-  PieChart,
   BarChart2,
   ArrowUpRight,
   Users,
@@ -27,7 +26,7 @@ import {
 } from "@/actions/dashboard-actions";
 import { PageHeader } from "@/components/layout/page-header";
 import { StatCard } from "@/components/stat-card";
-import { BarChart, DonutChart } from "@/components/ui/chart";
+
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -296,52 +295,7 @@ export default function FinanceiroPage() {
         />
       </div>
 
-      {/* Visual Charts Row (Revenue, Growth, Payment Methods, New Clients) */}
-      {report && (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Chart 1: Revenue vs Expenses (2 spans) */}
-          <Card className="lg:col-span-2 border border-border/40 shadow-sm">
-            <CardHeader className="flex flex-row items-center justify-between pb-3 border-b border-border/40">
-              <div>
-                <CardTitle className="text-base font-semibold text-foreground">
-                  Evolução Mensal (Receitas vs. Despesas)
-                </CardTitle>
-                <p className="text-xs text-muted-foreground mt-0.5">
-                  Comparativo de entradas e saídas de caixa ({report.year})
-                </p>
-              </div>
-              <span className="text-xs font-mono font-medium bg-muted px-2 py-1 rounded">
-                Ano {report.year}
-              </span>
-            </CardHeader>
-            <CardContent className="pt-4">
-              <BarChart
-                data={report.revenueChart}
-                categories={[
-                  { key: "receita", name: "Receita", color: "#10b981" },
-                  { key: "despesa", name: "Despesa", color: "#f43f5e" },
-                ]}
-                height={230}
-              />
-            </CardContent>
-          </Card>
 
-          {/* Chart 2: Services / Payment Types Distribution */}
-          <Card className="border border-border/40 shadow-sm flex flex-col justify-between">
-            <CardHeader className="pb-3 border-b border-border/40">
-              <CardTitle className="text-base font-semibold text-foreground">
-                Distribuição por Serviço / Recebimento
-              </CardTitle>
-              <p className="text-xs text-muted-foreground mt-0.5">
-                Proporção do faturamento por categoria
-              </p>
-            </CardHeader>
-            <CardContent className="pt-6 pb-6 my-auto">
-              <DonutChart data={report.paymentMethodsChart} size={150} />
-            </CardContent>
-          </Card>
-        </div>
-      )}
 
       {/* MONTHLY ORGANIZED SECTION (Janeiro, Fevereiro, Março...) */}
       <div className="space-y-4">
@@ -365,18 +319,16 @@ export default function FinanceiroPage() {
                 <button
                   key={m.monthIndex}
                   onClick={() => setSelectedMonthIdx(m.monthIndex)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all shrink-0 flex items-center gap-1.5 ${
-                    active
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all shrink-0 flex items-center gap-1.5 ${active
                       ? "bg-pink-600 text-white font-semibold shadow-md shadow-pink-600/25"
                       : "bg-card border border-border text-muted-foreground hover:text-foreground hover:bg-muted"
-                  }`}
+                    }`}
                 >
                   <span>{m.monthName}</span>
                   {hasMovement && (
                     <span
-                      className={`w-1.5 h-1.5 rounded-full ${
-                        active ? "bg-white" : "bg-pink-500"
-                      }`}
+                      className={`w-1.5 h-1.5 rounded-full ${active ? "bg-white" : "bg-pink-500"
+                        }`}
                     />
                   )}
                 </button>
@@ -446,9 +398,9 @@ export default function FinanceiroPage() {
                 <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
                   {selectedMonthData.revenue > 0
                     ? `${Math.round(
-                        (selectedMonthData.profit / selectedMonthData.revenue) *
-                          100
-                      )}%`
+                      (selectedMonthData.profit / selectedMonthData.revenue) *
+                      100
+                    )}%`
                     : "0%"}
                 </p>
                 <p className="text-xs text-muted-foreground">

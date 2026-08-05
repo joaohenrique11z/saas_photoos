@@ -14,14 +14,14 @@ export async function getAppointments(statusFilter?: string, search?: string) {
   if (search && search.trim() !== "") {
     const s = search.trim();
     whereClause.OR = [
-      { serviceName: { contains: s } },
-      { location: { contains: s } },
-      { summaryNotes: { contains: s } },
-      { client: { name: { contains: s } } },
-      { client: { email: { contains: s } } },
-      { client: { phone: { contains: s } } },
-      { client: { notes: { contains: s } } },
-      { client: { address: { contains: s } } },
+      { serviceName: { contains: s, mode: "insensitive" } },
+      { location: { contains: s, mode: "insensitive" } },
+      { summaryNotes: { contains: s, mode: "insensitive" } },
+      { client: { name: { contains: s, mode: "insensitive" } } },
+      { client: { email: { contains: s, mode: "insensitive" } } },
+      { client: { phone: { contains: s, mode: "insensitive" } } },
+      { client: { notes: { contains: s, mode: "insensitive" } } },
+      { client: { address: { contains: s, mode: "insensitive" } } },
     ];
   }
 
