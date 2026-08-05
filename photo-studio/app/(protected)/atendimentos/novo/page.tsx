@@ -85,7 +85,7 @@ function FormAtendimento() {
           {/* Cliente */}
           <div>
             <Label htmlFor="clientId" className="flex items-center gap-1.5 mb-1">
-              <User className="w-4 h-4 text-violet-500" />
+              <User className="w-4 h-4 text-pink-500" />
               <span>Cliente *</span>
             </Label>
             {loadingClients ? (
@@ -240,7 +240,7 @@ function FormAtendimento() {
             <button
               type="submit"
               disabled={submitting}
-              className="px-5 py-2 rounded-lg text-sm font-semibold bg-violet-600 text-white hover:bg-violet-500 disabled:opacity-50 shadow-md shadow-violet-500/25"
+              className="px-5 py-2 rounded-lg text-sm font-semibold bg-pink-600 text-white hover:bg-pink-500 disabled:opacity-50 shadow-md shadow-pink-500/25"
             >
               {submitting ? "Agendando..." : "Salvar Atendimento"}
             </button>

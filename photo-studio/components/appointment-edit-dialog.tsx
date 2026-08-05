@@ -87,19 +87,17 @@ export function AppointmentEditDialog({
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogTrigger>
-        {trigger ? (
-          trigger
-        ) : (
-          <button
-            className="p-1.5 rounded-lg hover:bg-violet-500/10 text-violet-600 dark:text-violet-400 transition-colors inline-flex items-center gap-1.5 text-xs font-semibold border border-border bg-card px-3 py-1.5"
-            title="Editar dados do atendimento"
-          >
-            <Edit2 className="w-3.5 h-3.5" />
-            <span>Editar Atendimento</span>
-          </button>
-        )}
-      </DialogTrigger>
+      {trigger ? (
+        <DialogTrigger render={trigger as any} />
+      ) : (
+        <DialogTrigger
+          className="p-1.5 rounded-lg hover:bg-pink-500/10 text-pink-600 dark:text-pink-400 transition-colors inline-flex items-center gap-1.5 text-xs font-semibold border border-border bg-card px-3 py-1.5"
+          title="Editar dados do atendimento"
+        >
+          <Edit2 className="w-3.5 h-3.5" />
+          <span>Editar Atendimento</span>
+        </DialogTrigger>
+      )}
       <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle>Editar Atendimento & Serviços</DialogTitle>
@@ -211,7 +209,7 @@ export function AppointmentEditDialog({
             <button
               type="submit"
               disabled={loading}
-              className="px-4 py-2 rounded-lg text-sm font-semibold bg-violet-600 text-white hover:bg-violet-500 disabled:opacity-50"
+              className="px-4 py-2 rounded-lg text-sm font-semibold bg-pink-600 text-white hover:bg-pink-500 disabled:opacity-50"
             >
               {loading ? "Salvando..." : "Salvar Alterações"}
             </button>

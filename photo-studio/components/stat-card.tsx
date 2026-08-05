@@ -25,7 +25,7 @@ export function StatCard({
   return (
     <Card
       className={cn(
-        "overflow-hidden border border-border/80 bg-card text-card-foreground shadow-sm transition-all duration-200 hover:shadow-md hover:border-border group",
+        "overflow-hidden border border-border/40 bg-card text-card-foreground shadow-sm transition-all duration-200 hover:shadow-md hover:border-border group",
         className
       )}
     >
@@ -48,7 +48,7 @@ export function StatCard({
             {trend && (
               <span
                 className={cn(
-                  "font-semibold px-2 py-0.5 rounded-md inline-flex items-center gap-1 text-[11px]",
+                  "font-semibold px-2 py-0.5 rounded-md inline-flex items-center gap-1 text-xs",
                   trend.positive
                     ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
                     : "bg-rose-500/10 text-rose-600 dark:text-rose-400"

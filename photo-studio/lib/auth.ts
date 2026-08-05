@@ -72,3 +72,11 @@ export async function getSessionUser() {
     where: { username },
   });
 }
+
+export async function requireAuth() {
+  const user = await getSessionUser();
+  if (!user) {
+    throw new Error("Não autorizado: Sessão inválida ou expirada.");
+  }
+  return user;
+}

@@ -6,6 +6,7 @@ import { getClientById } from "@/actions/client-actions";
 import { PageHeader } from "@/components/layout/page-header";
 import { StatusBadge } from "@/components/status-badge";
 import { ClientEditDialog } from "@/components/client-edit-dialog";
+import { ExpandableText } from "@/components/ui/expandable-text";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -35,7 +36,7 @@ export default async function FichaClientePage({
 
       <PageHeader
         title={client.name}
-        subtitle="Ficha detalhada do cliente, dados de contato e histórico de ensaios."
+        subtitle="Ficha completa, preferências e histórico contábil"
         action={
           <div className="flex items-center gap-2">
             <ClientEditDialog
@@ -48,41 +49,46 @@ export default async function FichaClientePage({
             />
             <Link
               href={`/atendimentos/novo?clientId=${client.id}`}
-              className="inline-flex items-center gap-2 rounded-lg bg-violet-600 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-violet-500/25 hover:bg-violet-500 transition-colors"
+              className="inline-flex items-center gap-2 rounded-lg bg-pink-600 px-4 py-2 text-sm font-semibold text-white hover:bg-pink-500 shadow-md shadow-pink-500/25 transition-colors"
             >
               <Plus className="w-4 h-4" />
-              <span>Novo Atendimento para Este Cliente</span>
+              <span>Novo Ensaio / Atendimento</span>
             </Link>
           </div>
         }
       />
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Info Card */}
-        <Card className="border shadow-sm h-fit">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+        {/* Client Contact Profile */}
+        <Card className="border shadow-sm">
+          <CardHeader>
             <CardTitle className="text-base font-semibold flex items-center gap-2">
-              <User className="w-4 h-4 text-violet-500" />
-              <span>Dados de Contato</span>
+              <User className="w-4 h-4 text-pink-500" />
+              <span>Informações Pessoais</span>
             </CardTitle>
-            <ClientEditDialog client={client} />
           </CardHeader>
-          <CardContent className="space-y-4 text-sm">
-            <div>
-              <span className="text-xs text-muted-foreground block">Telefone</span>
-              <span className="font-medium">{client.phone || "-"}</span>
+          <CardContent className="space-y-4">
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-muted-foreground flex items-center gap-1.5">
+                <Phone className="w-3.5 h-3.5" /> Telefone/Whats:
+              </span>
+              <span className="font-medium text-foreground">
+                {client.phone || client.whatsapp || "-"}
+              </span>
             </div>
-            <div>
-              <span className="text-xs text-muted-foreground block">WhatsApp</span>
-              <span className="font-medium">{client.whatsapp || "-"}</span>
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-muted-foreground flex items-center gap-1.5">
+                <Mail className="w-3.5 h-3.5" /> E-mail:
+              </span>
+              <span className="font-medium text-foreground">
+                {client.email || "-"}
+              </span>
             </div>
-            <div>
-              <span className="text-xs text-muted-foreground block">E-mail</span>
-              <span className="font-medium">{client.email || "-"}</span>
-            </div>
-            <div>
-              <span className="text-xs text-muted-foreground block">Instagram</span>
-              <span className="font-medium text-violet-600 font-mono text-xs">
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-muted-foreground flex items-center gap-1.5">
+                <AtSign className="w-3.5 h-3.5" /> Instagram:
+              </span>
+              <span className="font-medium text-pink-600 font-mono text-xs">
                 {client.instagram || "-"}
               </span>
             </div>
@@ -90,9 +96,9 @@ export default async function FichaClientePage({
               <span className="text-xs text-muted-foreground block mb-1">
                 Bloco de Notas / Preferências
               </span>
-              <p className="text-xs bg-muted/50 p-3 rounded-lg text-muted-foreground whitespace-pre-wrap">
-                {client.notes || "Nenhuma anotação cadastrada."}
-              </p>
+              <div className="text-xs bg-muted/50 p-3 rounded-lg text-muted-foreground">
+                <ExpandableText text={client.notes || ""} maxChars={150} />
+              </div>
             </div>
           </CardContent>
         </Card>

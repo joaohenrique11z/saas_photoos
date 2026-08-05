@@ -83,19 +83,17 @@ export function ClientEditDialog({
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogTrigger>
-        {trigger ? (
-          trigger
-        ) : (
-          <button
-            className="p-1.5 rounded-lg hover:bg-violet-500/10 text-violet-600 dark:text-violet-400 transition-colors inline-flex items-center gap-1.5 text-xs font-semibold"
-            title="Editar dados e anotações do cliente"
-          >
-            <Edit2 className="w-4 h-4" />
-            <span>Editar</span>
-          </button>
-        )}
-      </DialogTrigger>
+      {trigger ? (
+        <DialogTrigger render={trigger as any} />
+      ) : (
+        <DialogTrigger
+          className="p-1.5 rounded-lg hover:bg-pink-500/10 text-pink-600 dark:text-pink-400 transition-colors inline-flex items-center gap-1.5 text-xs font-semibold"
+          title="Editar dados e anotações do cliente"
+        >
+          <Edit2 className="w-4 h-4" />
+          <span>Editar</span>
+        </DialogTrigger>
+      )}
       <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle>Editar Cliente & Anotações</DialogTitle>
@@ -186,7 +184,7 @@ export function ClientEditDialog({
             <button
               type="submit"
               disabled={loading}
-              className="px-4 py-2 rounded-lg text-sm font-semibold bg-violet-600 text-white hover:bg-violet-500 disabled:opacity-50"
+              className="px-4 py-2 rounded-lg text-sm font-semibold bg-pink-600 text-white hover:bg-pink-500 disabled:opacity-50"
             >
               {loading ? "Salvando..." : "Salvar Alterações"}
             </button>

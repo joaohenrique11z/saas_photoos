@@ -27,7 +27,7 @@ import {
 } from "@/actions/dashboard-actions";
 import { PageHeader } from "@/components/layout/page-header";
 import { StatCard } from "@/components/stat-card";
-import { BarChart, AreaChart, DonutChart } from "@/components/ui/chart";
+import { BarChart, DonutChart } from "@/components/ui/chart";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -187,11 +187,9 @@ export default function FinanceiroPage() {
         subtitle="Organização mensal de receitas, despesas, margem de lucro e gráficos estatísticos."
         action={
           <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-            <DialogTrigger>
-              <button className="inline-flex items-center gap-2 rounded-xl bg-rose-600 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-rose-600/25 hover:bg-rose-500 transition-all active:scale-95">
-                <Plus className="w-4 h-4" />
-                <span>Nova Despesa</span>
-              </button>
+            <DialogTrigger className="inline-flex items-center gap-2 rounded-xl bg-rose-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm shadow-rose-600/25 hover:bg-rose-500 transition-all active:scale-95">
+              <Plus className="w-4 h-4" />
+              <span>Nova Despesa</span>
             </DialogTrigger>
             <DialogContent className="max-w-md">
               <DialogHeader>
@@ -288,7 +286,7 @@ export default function FinanceiroPage() {
           title="Ticket Médio"
           value={formatCurrency(report?.averageTicket || 0)}
           description="Média por atendimento entregue"
-          icon={<BarChart2 className="w-4 h-4 text-violet-500" />}
+          icon={<BarChart2 className="w-4 h-4 text-pink-500" />}
         />
         <StatCard
           title="Novos Clientes no Ano"
@@ -302,7 +300,7 @@ export default function FinanceiroPage() {
       {report && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Chart 1: Revenue vs Expenses (2 spans) */}
-          <Card className="lg:col-span-2 border border-border/80 shadow-sm">
+          <Card className="lg:col-span-2 border border-border/40 shadow-sm">
             <CardHeader className="flex flex-row items-center justify-between pb-3 border-b border-border/40">
               <div>
                 <CardTitle className="text-base font-semibold text-foreground">
@@ -329,7 +327,7 @@ export default function FinanceiroPage() {
           </Card>
 
           {/* Chart 2: Services / Payment Types Distribution */}
-          <Card className="border border-border/80 shadow-sm flex flex-col justify-between">
+          <Card className="border border-border/40 shadow-sm flex flex-col justify-between">
             <CardHeader className="pb-3 border-b border-border/40">
               <CardTitle className="text-base font-semibold text-foreground">
                 Distribuição por Serviço / Recebimento
@@ -342,66 +340,12 @@ export default function FinanceiroPage() {
               <DonutChart data={report.paymentMethodsChart} size={150} />
             </CardContent>
           </Card>
-
-          {/* Chart 3: Monthly Growth % */}
-          <Card className="border border-border/80 shadow-sm">
-            <CardHeader className="pb-3 border-b border-border/40">
-              <CardTitle className="text-base font-semibold text-foreground">
-                Crescimento Mês a Mês
-              </CardTitle>
-              <p className="text-xs text-muted-foreground mt-0.5">
-                Variação do faturamento entre meses
-              </p>
-            </CardHeader>
-            <CardContent className="pt-4">
-              <AreaChart
-                data={report.growthChart.map((g: any) => ({
-                  label: g.label,
-                  value: g.crescimento,
-                }))}
-                color="#8b5cf6"
-                height={160}
-              />
-            </CardContent>
-          </Card>
-
-          {/* Chart 4: Appointments vs New Clients per month */}
-          <Card className="lg:col-span-2 border border-border/80 shadow-sm">
-            <CardHeader className="flex flex-row items-center justify-between pb-3 border-b border-border/40">
-              <div>
-                <CardTitle className="text-base font-semibold text-foreground">
-                  Volume de Atendimentos & Novos Clientes
-                </CardTitle>
-                <p className="text-xs text-muted-foreground mt-0.5">
-                  Número de serviços prestados e captação de clientes
-                </p>
-              </div>
-            </CardHeader>
-            <CardContent className="pt-4">
-              <BarChart
-                data={report.appointmentsChart}
-                categories={[
-                  {
-                    key: "atendimentos",
-                    name: "Atendimentos",
-                    color: "#8b5cf6",
-                  },
-                  {
-                    key: "novosClientes",
-                    name: "Novos Clientes",
-                    color: "#3b82f6",
-                  },
-                ]}
-                height={160}
-              />
-            </CardContent>
-          </Card>
         </div>
       )}
 
       {/* MONTHLY ORGANIZED SECTION (Janeiro, Fevereiro, Março...) */}
       <div className="space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-border/80">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-border/40">
           <div>
             <h2 className="text-lg font-bold text-foreground">
               Relatório Contábil Mensal
@@ -423,7 +367,7 @@ export default function FinanceiroPage() {
                   onClick={() => setSelectedMonthIdx(m.monthIndex)}
                   className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all shrink-0 flex items-center gap-1.5 ${
                     active
-                      ? "bg-violet-600 text-white font-semibold shadow-md shadow-violet-600/25"
+                      ? "bg-pink-600 text-white font-semibold shadow-md shadow-pink-600/25"
                       : "bg-card border border-border text-muted-foreground hover:text-foreground hover:bg-muted"
                   }`}
                 >
@@ -431,7 +375,7 @@ export default function FinanceiroPage() {
                   {hasMovement && (
                     <span
                       className={`w-1.5 h-1.5 rounded-full ${
-                        active ? "bg-white" : "bg-violet-500"
+                        active ? "bg-white" : "bg-pink-500"
                       }`}
                     />
                   )}
@@ -442,7 +386,7 @@ export default function FinanceiroPage() {
         </div>
 
         {/* Selected Month Summary Card */}
-        <Card className="border border-border/80 shadow-sm overflow-hidden bg-card">
+        <Card className="border border-border/40 shadow-sm overflow-hidden bg-card">
           <CardHeader className="bg-muted/30 pb-4 border-b border-border/60">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
@@ -460,7 +404,7 @@ export default function FinanceiroPage() {
                 <div className="bg-rose-500/10 text-rose-600 dark:text-rose-400 px-3 py-1.5 rounded-lg font-semibold border border-rose-500/20">
                   Despesas: {formatCurrency(selectedMonthData.expenses)}
                 </div>
-                <div className="bg-violet-500/10 text-violet-600 dark:text-violet-300 px-3 py-1.5 rounded-lg font-bold border border-violet-500/20">
+                <div className="bg-pink-500/10 text-pink-600 dark:text-pink-300 px-3 py-1.5 rounded-lg font-bold border border-pink-500/20">
                   Lucro Mês: {formatCurrency(selectedMonthData.profit)}
                 </div>
               </div>
@@ -470,7 +414,7 @@ export default function FinanceiroPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {/* Box 1: Atendimentos no Mês */}
               <div className="bg-muted/20 border border-border/60 rounded-xl p-4 space-y-2">
-                <span className="text-[11px] font-mono font-semibold uppercase tracking-wider text-muted-foreground">
+                <span className="text-xs font-mono font-semibold uppercase tracking-wider text-muted-foreground">
                   Atendimentos ({selectedMonthData.appointmentsCount})
                 </span>
                 <p className="text-2xl font-bold text-foreground">
@@ -483,7 +427,7 @@ export default function FinanceiroPage() {
 
               {/* Box 2: Total de Receitas */}
               <div className="bg-muted/20 border border-border/60 rounded-xl p-4 space-y-2">
-                <span className="text-[11px] font-mono font-semibold uppercase tracking-wider text-muted-foreground">
+                <span className="text-xs font-mono font-semibold uppercase tracking-wider text-muted-foreground">
                   Receita Realizada
                 </span>
                 <p className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
@@ -496,7 +440,7 @@ export default function FinanceiroPage() {
 
               {/* Box 3: Lucratividade no Mês */}
               <div className="bg-muted/20 border border-border/60 rounded-xl p-4 space-y-2">
-                <span className="text-[11px] font-mono font-semibold uppercase tracking-wider text-muted-foreground">
+                <span className="text-xs font-mono font-semibold uppercase tracking-wider text-muted-foreground">
                   Lucratividade %
                 </span>
                 <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
@@ -587,7 +531,7 @@ export default function FinanceiroPage() {
                           <div className="flex items-center gap-1 opacity-80 group-hover:opacity-100 transition-opacity">
                             <button
                               onClick={() => handleOpenEditModal(exp)}
-                              className="p-1.5 rounded-md hover:bg-violet-500/10 text-violet-600 dark:text-violet-400"
+                              className="p-1.5 rounded-md hover:bg-pink-500/10 text-pink-600 dark:text-pink-400"
                               title="Editar despesa"
                             >
                               <Edit2 className="w-3.5 h-3.5" />
@@ -612,7 +556,7 @@ export default function FinanceiroPage() {
       </div>
 
       {/* All Expenses Master Table */}
-      <Card className="border border-border/80 shadow-sm">
+      <Card className="border border-border/40 shadow-sm">
         <CardHeader className="flex flex-row items-center justify-between pb-3">
           <div>
             <CardTitle className="text-base font-semibold">
@@ -627,7 +571,7 @@ export default function FinanceiroPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-border bg-muted/30 text-left text-[11px] font-mono font-semibold text-muted-foreground uppercase">
+                <tr className="border-b border-border bg-muted/30 text-left text-xs font-mono font-semibold text-muted-foreground uppercase">
                   <th className="p-4">Descrição</th>
                   <th className="p-4">Tipo / Vínculo</th>
                   <th className="p-4">Data</th>
@@ -665,7 +609,7 @@ export default function FinanceiroPage() {
                       </td>
                       <td className="p-4 text-xs">
                         {exp.appointment ? (
-                          <span className="inline-flex items-center gap-1 bg-violet-500/10 text-violet-600 dark:text-violet-300 px-2.5 py-1 rounded-md font-medium border border-violet-500/20">
+                          <span className="inline-flex items-center gap-1 bg-pink-500/10 text-pink-600 dark:text-pink-300 px-2.5 py-1 rounded-md font-medium border border-pink-500/20">
                             <Tag className="w-3 h-3" />
                             <span>
                               Atendimento: {exp.appointment.serviceName}
@@ -687,7 +631,7 @@ export default function FinanceiroPage() {
                         <div className="inline-flex items-center gap-1">
                           <button
                             onClick={() => handleOpenEditModal(exp)}
-                            className="p-1.5 rounded-lg hover:bg-violet-500/10 text-violet-600 dark:text-violet-400 transition-colors"
+                            className="p-1.5 rounded-lg hover:bg-pink-500/10 text-pink-600 dark:text-pink-400 transition-colors"
                             title="Editar despesa"
                           >
                             <Edit2 className="w-4 h-4" />
@@ -774,7 +718,7 @@ export default function FinanceiroPage() {
               <button
                 type="submit"
                 disabled={updating}
-                className="px-4 py-2 rounded-lg text-sm font-semibold bg-violet-600 text-white hover:bg-violet-500 disabled:opacity-50"
+                className="px-4 py-2 rounded-lg text-sm font-semibold bg-pink-600 text-white hover:bg-pink-500 disabled:opacity-50"
               >
                 {updating ? "Salvando..." : "Salvar Alterações"}
               </button>

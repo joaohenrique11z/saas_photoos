@@ -1,6 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/db";
+import { requireAuth } from "@/lib/auth";
 
 const MONTH_NAMES = [
   "Janeiro",
@@ -18,6 +19,7 @@ const MONTH_NAMES = [
 ];
 
 export async function getDashboardSummary() {
+  await requireAuth();
   const now = new Date();
   const todayStr = now.toISOString().split("T")[0];
   const currentMonth = now.getMonth();
@@ -172,6 +174,7 @@ export async function getDashboardSummary() {
 }
 
 export async function getFinancialMonthlyReport() {
+  await requireAuth();
   const [allAppointments, allExpenses, allClients] = await Promise.all([
     prisma.appointment.findMany({
       include: { client: true },

@@ -91,11 +91,9 @@ export default function ClientesPage() {
         subtitle="Gerencie a carteira de clientes do estúdio."
         action={
           <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-            <DialogTrigger>
-              <button className="inline-flex items-center gap-2 rounded-lg bg-violet-600 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-violet-500/25 hover:bg-violet-500 transition-colors">
-                <Plus className="w-4 h-4" />
-                <span>Novo Cliente</span>
-              </button>
+            <DialogTrigger className="inline-flex items-center gap-2 rounded-lg bg-pink-600 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-pink-500/25 hover:bg-pink-500 transition-colors">
+              <Plus className="w-4 h-4" />
+              <span>Novo Cliente</span>
             </DialogTrigger>
             <DialogContent className="max-w-md">
               <DialogHeader>
@@ -186,7 +184,7 @@ export default function ClientesPage() {
                   <button
                     type="submit"
                     disabled={creating}
-                    className="px-4 py-2 rounded-lg text-sm font-semibold bg-violet-600 text-white hover:bg-violet-500 disabled:opacity-50"
+                    className="px-4 py-2 rounded-lg text-sm font-semibold bg-pink-600 text-white hover:bg-pink-500 disabled:opacity-50"
                   >
                     {creating ? "Salvando..." : "Salvar Cliente"}
                   </button>
@@ -203,7 +201,7 @@ export default function ClientesPage() {
         <Input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="Buscar por nome, e-mail ou telefone..."
+          placeholder="Buscar por nome, telefone, anotações, endereço..."
           className="pl-9"
         />
       </div>
@@ -243,7 +241,7 @@ export default function ClientesPage() {
                           href={`/clientes/${cli.id}`}
                           className="hover:underline flex items-center gap-2"
                         >
-                          <User className="w-4 h-4 text-violet-500 shrink-0" />
+                          <User className="w-4 h-4 text-pink-500 shrink-0" />
                           <span>{cli.name}</span>
                         </Link>
                       </td>
@@ -263,7 +261,7 @@ export default function ClientesPage() {
                       </td>
                       <td className="p-4 text-muted-foreground">
                         {cli.instagram ? (
-                          <span className="text-xs font-mono bg-violet-500/10 text-violet-600 px-2 py-0.5 rounded">
+                          <span className="text-xs font-mono bg-pink-500/10 text-pink-600 px-2 py-0.5 rounded">
                             {cli.instagram}
                           </span>
                         ) : (

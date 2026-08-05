@@ -13,6 +13,7 @@ import {
   Plus,
   Trash2,
   CheckCircle2,
+  Edit2,
 } from "lucide-react";
 import {
   getAppointmentById,
@@ -23,6 +24,7 @@ import { createExpense, deleteExpense } from "@/actions/expense-actions";
 import { PageHeader } from "@/components/layout/page-header";
 import { StatusBadge, AppointmentStatus } from "@/components/status-badge";
 import { AppointmentEditDialog } from "@/components/appointment-edit-dialog";
+import { ExpandableText } from "@/components/ui/expandable-text";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -58,6 +60,9 @@ export default function FichaAtendimentoPage({
   const loadData = async () => {
     try {
       const data = await getAppointmentById(id);
+      if (data) {
+        data.price = typeof data.price?.toNumber === "function" ? data.price.toNumber() : Number(data.price);
+      }
       setAppointment(data);
     } catch (err) {
       console.error(err);
@@ -159,7 +164,10 @@ export default function FichaAtendimentoPage({
         action={
           <div className="flex items-center gap-2">
             <AppointmentEditDialog
-              appointment={appointment}
+              appointment={{
+                ...appointment,
+                price: typeof appointment.price?.toNumber === "function" ? appointment.price.toNumber() : Number(appointment.price),
+              }}
               onSuccess={loadData}
             />
             <button
@@ -195,7 +203,7 @@ export default function FichaAtendimentoPage({
                         key={st}
                         disabled={updatingStatus || appointment.status === st}
                         onClick={() => handleStatusChange(st)}
-                        className={`text-[11px] px-2.5 py-1 rounded-md font-medium border transition-colors ${
+                        className={`text-xs px-2.5 py-1 rounded-md font-medium border transition-colors ${
                           appointment.status === st
                             ? "bg-muted font-bold opacity-60"
                             : "hover:bg-muted/70"
@@ -212,16 +220,35 @@ export default function FichaAtendimentoPage({
 
           {/* Anotações do Ensaio */}
           <Card className="border shadow-sm">
-            <CardHeader>
+            <CardHeader className="flex flex-row items-center justify-between pb-3">
               <CardTitle className="text-base font-semibold flex items-center gap-2">
-                <FileText className="w-4 h-4 text-violet-500" />
+                <FileText className="w-4 h-4 text-pink-500" />
                 <span>Bloco de Notas do Ensaio</span>
               </CardTitle>
+              <AppointmentEditDialog
+                appointment={{
+                  ...appointment,
+                  price: typeof appointment.price?.toNumber === "function" ? appointment.price.toNumber() : Number(appointment.price),
+                }}
+                onSuccess={loadData}
+                trigger={
+                  <button
+                    type="button"
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-pink-500/10 text-pink-600 dark:text-pink-400 hover:bg-pink-500/20 transition-colors"
+                  >
+                    <Edit2 className="w-3.5 h-3.5" />
+                    <span>Editar Anotações / Ensaio</span>
+                  </button>
+                }
+              />
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-foreground bg-muted/30 p-4 rounded-xl whitespace-pre-wrap min-h-[100px]">
-                {appointment.summaryNotes || "Nenhuma anotação registrada para este ensaio."}
-              </p>
+              <div className="text-sm text-foreground bg-muted/30 p-4 rounded-xl min-h-[100px]">
+                <ExpandableText
+                  text={appointment.summaryNotes}
+                  maxChars={180}
+                />
+              </div>
             </CardContent>
           </Card>
 
@@ -233,11 +260,9 @@ export default function FichaAtendimentoPage({
                 <span>Despesas Diretas deste Ensaio ({appointment.expenses.length})</span>
               </CardTitle>
               <Dialog open={isExpenseModalOpen} onOpenChange={setIsExpenseModalOpen}>
-                <DialogTrigger>
-                  <button className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-rose-500/10 text-rose-600 hover:bg-rose-500/20 text-xs font-semibold transition-colors">
-                    <Plus className="w-3.5 h-3.5" />
-                    <span>Adicionar Despesa</span>
-                  </button>
+                <DialogTrigger className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-rose-500/10 text-rose-600 hover:bg-rose-500/20 text-xs font-semibold transition-colors">
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>Adicionar Despesa</span>
                 </DialogTrigger>
                 <DialogContent className="max-w-sm">
                   <DialogHeader>
@@ -359,7 +384,7 @@ export default function FichaAtendimentoPage({
           <Card className="border shadow-sm">
             <CardHeader className="pb-2">
               <CardTitle className="text-base font-semibold flex items-center gap-2">
-                <User className="w-4 h-4 text-violet-500" />
+                <User className="w-4 h-4 text-pink-500" />
                 <span>Cliente</span>
               </CardTitle>
             </CardHeader>
@@ -368,7 +393,7 @@ export default function FichaAtendimentoPage({
                 <span className="text-xs text-muted-foreground block">Nome</span>
                 <Link
                   href={`/clientes/${appointment.clientId}`}
-                  className="font-semibold text-violet-600 hover:underline"
+                  className="font-semibold text-pink-600 hover:underline"
                 >
                   {appointment.client?.name || "Cliente"}
                 </Link>
@@ -382,9 +407,27 @@ export default function FichaAtendimentoPage({
                 <span>{appointment.client?.email || "-"}</span>
               </div>
               <div className="pt-2">
-                <span className="text-xs text-muted-foreground block mb-1">
-                  Data & Hora do Ensaio
-                </span>
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs text-muted-foreground block">
+                    Data & Hora do Ensaio
+                  </span>
+                  <AppointmentEditDialog
+                    appointment={{
+                      ...appointment,
+                      price: typeof appointment.price?.toNumber === "function" ? appointment.price.toNumber() : Number(appointment.price),
+                    }}
+                    onSuccess={loadData}
+                    trigger={
+                      <button
+                        type="button"
+                        className="inline-flex items-center gap-1 text-xs font-semibold text-pink-600 dark:text-pink-400 hover:underline"
+                      >
+                        <Edit2 className="w-3 h-3" />
+                        <span>Editar</span>
+                      </button>
+                    }
+                  />
+                </div>
                 <div className="flex items-center gap-1.5 text-xs font-semibold text-foreground bg-muted p-2 rounded-md">
                   <Calendar className="w-3.5 h-3.5 text-blue-500" />
                   <span>

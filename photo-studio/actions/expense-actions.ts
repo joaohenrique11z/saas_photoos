@@ -1,9 +1,11 @@
 "use server";
 
 import { prisma } from "@/lib/db";
+import { requireAuth } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
 
 export async function getExpenses() {
+  await requireAuth();
   const expenses = await prisma.expense.findMany({
     orderBy: { date: "desc" },
     include: {
@@ -29,6 +31,7 @@ export async function createExpense(data: {
   date: Date;
   appointmentId?: string | null;
 }) {
+  await requireAuth();
   const expense = await prisma.expense.create({
     data: {
       description: data.description,
@@ -50,6 +53,7 @@ export async function updateExpense(
     date?: Date;
   }
 ) {
+  await requireAuth();
   const expense = await prisma.expense.update({
     where: { id },
     data: {
@@ -64,6 +68,7 @@ export async function updateExpense(
 }
 
 export async function deleteExpense(id: string) {
+  await requireAuth();
   await prisma.expense.delete({ where: { id } });
   revalidatePath("/financeiro");
   revalidatePath("/");

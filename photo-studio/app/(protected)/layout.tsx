@@ -1,7 +1,7 @@
 import React from "react";
 import { redirect } from "next/navigation";
 import { getSessionUser } from "@/lib/auth";
-import { Sidebar } from "@/components/layout/sidebar";
+import { Navigation } from "@/components/layout/navigation";
 
 export default async function ProtectedLayout({
   children,
@@ -16,9 +16,9 @@ export default async function ProtectedLayout({
 
   return (
     <div className="flex min-h-screen bg-background">
-      <Sidebar />
-      <main className="flex-1 overflow-y-auto min-w-0">
-        <div className="p-6 md:p-8 max-w-7xl mx-auto">{children}</div>
+      <Navigation />
+      <main className="flex-1 overflow-y-auto min-w-0 pb-16 md:pb-0 md:ml-64">
+        <div className="p-4 md:p-8 max-w-7xl mx-auto">{children}</div>
       </main>
     </div>
   );

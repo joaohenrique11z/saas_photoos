@@ -50,58 +50,58 @@
 
 /* 
   Handcrafted Design Tokens
-  Inspired by Apple, Linear, and Vercel: Warm, natural neutrals with rich violet accent
+  Inspired by Taella Photos: Warm, natural neutrals with soft pastel pink accents
 */
 :root {
-  --background: oklch(0.99 0.004 80);
-  --foreground: oklch(0.16 0.012 280);
+  --background: oklch(0.99 0.005 60);
+  --foreground: oklch(0.15 0.01 345);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.16 0.012 280);
+  --card-foreground: oklch(0.15 0.01 345);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.16 0.012 280);
-  --primary: oklch(0.48 0.2 280);
+  --popover-foreground: oklch(0.15 0.01 345);
+  --primary: oklch(0.65 0.16 345); /* Soft pink */
   --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.965 0.008 85);
-  --secondary-foreground: oklch(0.24 0.02 280);
-  --muted: oklch(0.965 0.008 85);
-  --muted-foreground: oklch(0.52 0.015 280);
-  --accent: oklch(0.96 0.012 280);
-  --accent-foreground: oklch(0.24 0.02 280);
+  --secondary: oklch(0.96 0.01 345);
+  --secondary-foreground: oklch(0.25 0.02 345);
+  --muted: oklch(0.96 0.01 345);
+  --muted-foreground: oklch(0.45 0.02 345);
+  --accent: oklch(0.95 0.02 345);
+  --accent-foreground: oklch(0.25 0.02 345);
   --destructive: oklch(0.58 0.23 27);
-  --border: oklch(0.91 0.008 85);
-  --input: oklch(0.91 0.008 85);
-  --ring: oklch(0.65 0.16 280);
-  --chart-1: oklch(0.52 0.22 280);
+  --border: oklch(0.93 0.01 345); /* Lighter border */
+  --input: oklch(0.93 0.01 345);
+  --ring: oklch(0.65 0.16 345);
+  --chart-1: oklch(0.65 0.16 345);
   --chart-2: oklch(0.68 0.18 150);
   --chart-3: oklch(0.75 0.18 55);
   --chart-4: oklch(0.65 0.18 240);
   --chart-5: oklch(0.62 0.22 340);
   --radius: 0.75rem;
-  --sidebar: oklch(0.985 0.005 80);
-  --sidebar-foreground: oklch(0.16 0.012 280);
-  --sidebar-primary: oklch(0.48 0.2 280);
+  --sidebar: oklch(0.99 0.005 60);
+  --sidebar-foreground: oklch(0.15 0.01 345);
+  --sidebar-primary: oklch(0.65 0.16 345);
   --sidebar-primary-foreground: oklch(0.99 0 0);
-  --sidebar-accent: oklch(0.955 0.01 280);
-  --sidebar-accent-foreground: oklch(0.24 0.02 280);
-  --sidebar-border: oklch(0.91 0.008 85);
-  --sidebar-ring: oklch(0.65 0.16 280);
+  --sidebar-accent: oklch(0.96 0.01 345);
+  --sidebar-accent-foreground: oklch(0.25 0.02 345);
+  --sidebar-border: oklch(0.93 0.01 345);
+  --sidebar-ring: oklch(0.65 0.16 345);
 }
 
 .dark {
-  --background: oklch(0.145 0.01 280);
-  --foreground: oklch(0.985 0.005 80);
-  --card: oklch(0.19 0.012 280);
-  --card-foreground: oklch(0.985 0.005 80);
-  --popover: oklch(0.19 0.012 280);
-  --popover-foreground: oklch(0.985 0.005 80);
-  --primary: oklch(0.78 0.16 280);
-  --primary-foreground: oklch(0.18 0.02 280);
-  --secondary: oklch(0.24 0.015 280);
-  --secondary-foreground: oklch(0.985 0.005 80);
-  --muted: oklch(0.24 0.015 280);
-  --muted-foreground: oklch(0.65 0.015 280);
-  --accent: oklch(0.24 0.015 280);
-  --accent-foreground: oklch(0.985 0.005 80);
+  --background: oklch(0.15 0.01 345);
+  --foreground: oklch(0.98 0.005 345);
+  --card: oklch(0.18 0.01 345);
+  --card-foreground: oklch(0.98 0.005 345);
+  --popover: oklch(0.18 0.01 345);
+  --popover-foreground: oklch(0.98 0.005 345);
+  --primary: oklch(0.75 0.12 345); /* Lighter pink for dark mode */
+  --primary-foreground: oklch(0.15 0.02 345);
+  --secondary: oklch(0.22 0.015 345);
+  --secondary-foreground: oklch(0.98 0.005 345);
+  --muted: oklch(0.22 0.015 345);
+  --muted-foreground: oklch(0.65 0.01 345);
+  --accent: oklch(0.22 0.015 345);
+  --accent-foreground: oklch(0.98 0.005 345);
   --destructive: oklch(0.68 0.2 25);
   --border: oklch(1 0 0 / 12%);
   --input: oklch(1 0 0 / 15%);
@@ -126,7 +126,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground antialiased selection:bg-violet-500/20 selection:text-violet-600;
+    @apply bg-background text-foreground antialiased selection:bg-pink-500/20 selection:text-pink-600;
   }
   html {
     @apply font-sans;

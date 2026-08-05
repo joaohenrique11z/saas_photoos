@@ -42,7 +42,7 @@ export default async function DashboardPage() {
         action={
           <Link
             href="/atendimentos/novo"
-            className="inline-flex items-center gap-2 rounded-xl bg-violet-600 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-violet-600/25 hover:bg-violet-500 transition-all active:scale-95"
+            className="inline-flex items-center gap-2 rounded-xl bg-pink-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm shadow-pink-600/25 hover:bg-pink-500 transition-all active:scale-95"
           >
             <Plus className="w-4 h-4" />
             <span>Novo Atendimento</span>
@@ -56,7 +56,7 @@ export default async function DashboardPage() {
           title="Faturamento do Mês"
           value={formatCurrency(summary.monthlyRevenue)}
           description="Serviços realizados no mês atual"
-          icon={<TrendingUp className="w-4 h-4 text-violet-500" />}
+          icon={<TrendingUp className="w-4 h-4 text-pink-500" />}
           trend={{
             value: growthFormatted,
             positive: summary.monthlyGrowth >= 0,
@@ -96,10 +96,10 @@ export default async function DashboardPage() {
         {/* Left Column (2 spans): Today's & Upcoming Appointments */}
         <div className="lg:col-span-2 space-y-6">
           {/* Today's Appointments */}
-          <Card className="border border-border/80 shadow-sm overflow-hidden">
+          <Card className="border border-border/40 shadow-sm overflow-hidden">
             <CardHeader className="flex flex-row items-center justify-between pb-4 border-b border-border/40 bg-muted/20">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-xl bg-violet-500/10 flex items-center justify-center text-violet-600">
+                <div className="w-8 h-8 rounded-xl bg-pink-500/10 flex items-center justify-center text-pink-600">
                   <Calendar className="w-4 h-4" />
                 </div>
                 <div>
@@ -111,7 +111,7 @@ export default async function DashboardPage() {
                   </CardDescription>
                 </div>
               </div>
-              <span className="text-xs font-mono font-semibold bg-violet-500/10 text-violet-600 px-2.5 py-1 rounded-md">
+              <span className="text-xs font-mono font-semibold bg-pink-500/10 text-pink-600 px-2.5 py-1 rounded-md">
                 {summary.todayAppointments.length} agendado(s)
               </span>
             </CardHeader>
@@ -148,8 +148,8 @@ export default async function DashboardPage() {
                             </span>
                           </p>
                           {app.location && (
-                            <p className="text-[11px] text-muted-foreground mt-1 flex items-center gap-1">
-                              <MapPin className="w-3 h-3 text-violet-500" />
+                            <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
+                              <MapPin className="w-3 h-3 text-pink-500" />
                               <span>{app.location}</span>
                             </p>
                           )}
@@ -169,7 +169,7 @@ export default async function DashboardPage() {
           </Card>
 
           {/* Upcoming Appointments */}
-          <Card className="border border-border/80 shadow-sm overflow-hidden">
+          <Card className="border border-border/40 shadow-sm overflow-hidden">
             <CardHeader className="flex flex-row items-center justify-between pb-4 border-b border-border/40">
               <div>
                 <CardTitle className="text-base font-semibold text-foreground">
@@ -181,7 +181,7 @@ export default async function DashboardPage() {
               </div>
               <Link
                 href="/atendimentos"
-                className="text-xs font-semibold text-violet-600 hover:text-violet-500 inline-flex items-center gap-1"
+                className="text-xs font-semibold text-pink-600 hover:text-pink-500 inline-flex items-center gap-1"
               >
                 <span>Ver agenda completa</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -191,7 +191,7 @@ export default async function DashboardPage() {
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-border text-left text-[11px] font-semibold text-muted-foreground font-mono uppercase bg-muted/20">
+                    <tr className="border-b border-border text-left text-xs font-semibold text-muted-foreground font-mono uppercase bg-muted/20">
                       <th className="py-3 px-4">Cliente</th>
                       <th className="py-3 px-4">Serviço</th>
                       <th className="py-3 px-4">Data & Hora</th>
@@ -253,7 +253,7 @@ export default async function DashboardPage() {
         {/* Right Column (1 span): Recent Clients & Studio Pulse */}
         <div className="space-y-6">
           {/* Recent Clients */}
-          <Card className="border border-border/80 shadow-sm overflow-hidden">
+          <Card className="border border-border/40 shadow-sm overflow-hidden">
             <CardHeader className="flex flex-row items-center justify-between pb-4 border-b border-border/40">
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-600">
@@ -270,7 +270,7 @@ export default async function DashboardPage() {
               </div>
               <Link
                 href="/clientes"
-                className="text-xs font-semibold text-violet-600 hover:text-violet-500"
+                className="text-xs font-semibold text-pink-600 hover:text-pink-500"
               >
                 Ver todos
               </Link>
@@ -298,7 +298,7 @@ export default async function DashboardPage() {
                         className="flex items-center justify-between p-3.5 hover:bg-muted/40 transition-colors"
                       >
                         <div className="flex items-center gap-3">
-                          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500/20 to-indigo-500/20 flex items-center justify-center text-violet-700 dark:text-violet-300 font-bold text-xs shrink-0">
+                          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-pink-500/20 to-indigo-500/20 flex items-center justify-center text-pink-700 dark:text-pink-300 font-bold text-xs shrink-0">
                             {initials}
                           </div>
                           <div className="overflow-hidden">
@@ -310,7 +310,7 @@ export default async function DashboardPage() {
                             </p>
                           </div>
                         </div>
-                        <span className="text-[11px] text-muted-foreground font-mono">
+                        <span className="text-xs text-muted-foreground font-mono">
                           Ver ficha &rarr;
                         </span>
                       </Link>
@@ -322,7 +322,7 @@ export default async function DashboardPage() {
           </Card>
 
           {/* Studio Pulse Summary */}
-          <Card className="border border-border/80 shadow-sm bg-gradient-to-br from-card via-card to-muted/40">
+          <Card className="border border-border/40 shadow-sm bg-gradient-to-br from-card via-card to-muted/40">
             <CardHeader>
               <CardTitle className="text-sm font-semibold uppercase tracking-wider text-muted-foreground font-mono">
                 Resumo Acumulado do Estúdio

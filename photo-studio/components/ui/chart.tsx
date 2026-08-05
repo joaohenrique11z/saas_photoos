@@ -35,7 +35,7 @@ export function BarChart({
   return (
     <div className={cn("w-full select-none", className)}>
       <div
-        className="relative flex items-end justify-between gap-2 pt-6 pb-2 border-b border-border/80"
+        className="relative flex items-end justify-between gap-2 pt-6 pb-2 border-b border-border/40"
         style={{ height: `${height}px` }}
       >
         {/* Background Grid Lines */}
@@ -45,7 +45,7 @@ export function BarChart({
               key={idx}
               className="flex items-center w-full border-t border-border/40"
             >
-              <span className="text-[10px] text-muted-foreground/60 -mt-4 pr-1">
+              <span className="text-xs text-muted-foreground/60 -mt-4 pr-1">
                 {step > 0
                   ? formatCurrency(maxValue * step).replace("R$", "")
                   : "0"}
@@ -66,14 +66,14 @@ export function BarChart({
             >
               {/* Tooltip on hover */}
               {isHovered && (
-                <div className="absolute bottom-full mb-2 z-30 px-3 py-2 rounded-lg bg-popover text-popover-foreground shadow-xl border border-border text-xs min-w-[140px] pointer-events-none transition-all animate-in fade-in-0 zoom-in-95">
+                <div className="absolute bottom-full mb-2 z-30 px-3 py-2 rounded-lg bg-popover text-popover-foreground shadow-md border border-border text-xs min-w-[140px] pointer-events-none transition-all animate-in fade-in-0 zoom-in-95">
                   <p className="font-semibold text-foreground mb-1">
                     {item.label}
                   </p>
                   {categories.map((cat) => (
                     <div
                       key={cat.key}
-                      className="flex items-center justify-between gap-3 text-[11px]"
+                      className="flex items-center justify-between gap-3 text-xs"
                     >
                       <span className="flex items-center gap-1.5 text-muted-foreground">
                         <span
@@ -116,7 +116,7 @@ export function BarChart({
         {data.map((item, index) => (
           <span
             key={item.label + index}
-            className="text-center flex-1 text-[11px] font-medium text-muted-foreground truncate"
+            className="text-center flex-1 text-xs font-medium text-muted-foreground truncate"
           >
             {item.label}
           </span>
@@ -248,7 +248,7 @@ export function AreaChart({
         {data.map((item, index) => (
           <span
             key={item.label + index}
-            className="text-center flex-1 text-[10px] font-medium text-muted-foreground truncate"
+            className="text-center flex-1 text-xs font-medium text-muted-foreground truncate"
           >
             {item.label}
           </span>
@@ -409,7 +409,7 @@ export function DonutChart({
         </svg>
 
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
-          <span className="text-[10px] uppercase font-semibold text-muted-foreground">
+          <span className="text-xs uppercase font-semibold text-muted-foreground">
             Total
           </span>
           <span className="text-sm font-bold text-foreground">
