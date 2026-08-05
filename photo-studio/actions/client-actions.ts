@@ -105,7 +105,7 @@ export async function updateClient(
 
 export async function deleteClient(id: string) {
   await requireAuth();
-  await prisma.$transaction(async (tx) => {
+  await prisma.$transaction(async (tx: any) => {
     const appointments = await tx.appointment.findMany({
       where: { clientId: id },
       select: { id: true },
