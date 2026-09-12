@@ -4,3 +4,10 @@ dist/
 .turbo/
 .env
 .DS_Store
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+
+.vercel
+.env*
